@@ -1,21 +1,8 @@
-import ntplib
-from time import ctime, sleep
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
+from time_sync import sync_time  # Import the sync_time function
 
-# Synchronize time with retries
-def sync_time(retries=3):
-    for attempt in range(retries):
-        try:
-            client = ntplib.NTPClient()
-            response = client.request('pool.ntp.org', version=3)
-            print(f"Time synchronized: {ctime(response.tx_time)}")
-            return True
-        except Exception as e:
-            print(f"Failed to synchronize time (attempt {attempt + 1}): {e}")
-            sleep(2)  # Wait before retrying
-    return False
-
+# Synchronize time
 if sync_time():  # Call the function to sync time
     sleep(5)  # Add a longer delay to ensure time is set
 else:
