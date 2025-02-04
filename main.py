@@ -1,9 +1,15 @@
+import os
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
 from bot import start, download, handle_username, handle_password, handle_playlist
 
+# Load environment variables from .env file
+load_dotenv()
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
 async def main():
-    application = ApplicationBuilder().token("YOUR_BOT_TOKEN").build()
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
 
     # Define the conversation handler
     conv_handler = ConversationHandler(
@@ -23,5 +29,4 @@ async def main():
 
 if __name__ == "__main__":
     import asyncio
-    # Instead of using asyncio.get_event_loop(), just call the main function directly
     asyncio.run(main())
