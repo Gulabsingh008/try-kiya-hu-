@@ -1,32 +1,50 @@
-import os
-from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
-from bot import start, download, handle_username, handle_password, handle_playlist
+from pyrogram import Client, filters
+from config import BOT_TOKEN
 
-# Load environment variables from .env file
-load_dotenv()
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+app = Client("my_bot", bot_token=BOT_TOKEN)
 
-async def main():
-    application = ApplicationBuilder().token(BOT_TOKEN).build()
+@app.on_message(filters.command("start"))
+async def start(client, message):
+    await message.reply("Welcome to the Video Downloader Bot!\n"
+                         "This bot allows you to download videos from a specified URL and upload them to this chat.\n"
+                         "To start the download process, use the /download command.")
 
-    # Define the conversation handler
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("download", download)],
-        states={
-            "USERNAME": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_username)],
-            "PASSWORD": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_password)],
-            "PLAYLIST": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_playlist)],
-        },
-        fallbacks=[],
-    )
+@app.on_message(filters.command("download"))
+async def download(client, message):
+    await message.reply("Please enter your username:")
+    await app.send_message(message.chat.id, "Please enter your username:")
 
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(conv_handler)
+@app.on_message(filters.text)
+async def handle_username(client, message):
+    username = message.text
+    await message.reply(f"Username received: {username}. Please enter your password:")
+    
+    # Store the username in user data (you can implement a more robust storage)
+    client.user_data[message.chat.id] = {"username": username}
 
-    await application.run_polling()
+@app.on_message(filters.text)
+async def handle_password(client, message):
+    if message.chat.id in client.user_data:
+        password = message.text
+        username = client.user_data[message.chat.id]["username"]
+        await message.reply(f"Password received for {username}. Please enter the playlist URL:")
+        
+        # Store the password in user data
+        client.user_data[message.chat.id]["password"] = password
+
+@app.on_message(filters.text)
+async def handle_playlist(client, message):
+    if message.chat.id in client.user_data:
+        playlist_url = message.text
+        username = client.user_data[message.chat.id]["username"]
+        password = client.user_data[message.chat.id]["password"]
+        
+        # Here you would implement the video downloading logic
+        # For example, call a function to download the video using yt-dlp
+        await message.reply(f"Downloading video from {playlist_url} with username {username} and password {password}...")
+        
+        # After downloading, you can send the video back to the user
+        # await app.send_video(message.chat.id, "path_to_downloaded_video.mp4")
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+    app.run()
