@@ -52,5 +52,11 @@ async def handle_playlist(client, message):
         username = client.user_data[message.chat.id]["username"]
         password = client.user_data[message.chat.id]["password"]
         
-        # Here you would implement the video downloading logic
-        await message.reply(f"Downloading video
+        # Corrected line with properly closed f-string
+        await message.reply(f"Downloading video from {playlist_url} with username {username} and password {password}...")
+        
+        # After downloading, you can send the video back to the user
+        # await app.send_video(message.chat.id, "path_to_downloaded_video.mp4")
+
+if __name__ == "__main__":
+    app.run()
