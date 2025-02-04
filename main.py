@@ -17,7 +17,7 @@ def sync_time(retries=3):
     return False
 
 if sync_time():  # Call the function to sync time
-    sleep(2)  # Add a short delay to ensure time is set
+    sleep(5)  # Add a longer delay to ensure time is set
 else:
     print("Could not synchronize time. Exiting...")
     exit(1)  # Exit if time synchronization fails
