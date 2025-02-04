@@ -1,4 +1,4 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, ConversationHandler
 from bot import start, download, handle_username, handle_password, handle_playlist
 
 def main():
@@ -9,9 +9,9 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("download", download)],
         states={
-            "USERNAME": [MessageHandler(Filters.text & ~Filters.command, handle_username)],
-            "PASSWORD": [MessageHandler(Filters.text & ~Filters.command, handle_password)],
-            "PLAYLIST": [MessageHandler(Filters.text & ~Filters.command, handle_playlist)],
+            "USERNAME": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_username)],
+            "PASSWORD": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_password)],
+            "PLAYLIST": [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_playlist)],
         },
         fallbacks=[],
     )
