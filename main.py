@@ -1,6 +1,7 @@
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
 from time_sync import sync_time  # Import the sync_time function
+from time import sleep  # Import sleep from the time module
 
 # Synchronize time
 if sync_time():  # Call the function to sync time
