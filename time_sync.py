@@ -12,3 +12,9 @@ def sync_time(retries=5):
             print(f"Failed to synchronize time (attempt {attempt + 1}): {e}")
             sleep(2)  # Wait before retrying
     return False
+
+def continuous_time_check():
+    while True:
+        if not sync_time():
+            print("Failed to synchronize time. Retrying...")
+        sleep(60)  # Check every minute
