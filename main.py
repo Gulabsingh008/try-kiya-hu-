@@ -5,7 +5,7 @@ from time import sleep  # Import sleep from the time module
 
 # Synchronize time
 if sync_time():  # Call the function to sync time
-    sleep(5)  # Add a longer delay to ensure time is set
+    sleep(10)  # Add a longer delay to ensure time is set
 else:
     print("Could not synchronize time. Exiting...")
     exit(1)  # Exit if time synchronization fails
