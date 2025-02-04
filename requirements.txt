@@ -3,3 +3,4 @@ tgcrypto  # For faster encryption
 yt-dlp  # For downloading videos
 requests  # For making HTTP requests
 python-dotenv
+ntplib
