@@ -1,5 +1,18 @@
+import ntplib
+from time import ctime
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
+
+# Synchronize time
+def sync_time():
+    try:
+        client = ntplib.NTPClient()
+        response = client.request('pool.ntp.org', version=3)
+        print(f"Time synchronized: {ctime(response.tx_time)}")
+    except Exception as e:
+        print(f"Failed to synchronize time: {e}")
+
+sync_time()  # Call the function to sync time
 
 app = Client("my_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
