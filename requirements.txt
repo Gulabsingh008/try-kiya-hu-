@@ -1,4 +1,5 @@
-python-telegram-bot==20.0
-yt-dlp
-requests
+pyrogram==1.3.0  # or the latest version
+tgcrypto  # For faster encryption
+yt-dlp  # For downloading videos
+requests  # For making HTTP requests
 python-dotenv
