@@ -3,17 +3,24 @@ from time import ctime, sleep
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
 
-# Synchronize time
-def sync_time():
-    try:
-        client = ntplib.NTPClient()
-        response = client.request('pool.ntp.org', version=3)
-        print(f"Time synchronized: {ctime(response.tx_time)}")
-    except Exception as e:
-        print(f"Failed to synchronize time: {e}")
+# Synchronize time with retries
+def sync_time(retries=3):
+    for attempt in range(retries):
+        try:
+            client = ntplib.NTPClient()
+            response = client.request('pool.ntp.org', version=3)
+            print(f"Time synchronized: {ctime(response.tx_time)}")
+            return True
+        except Exception as e:
+            print(f"Failed to synchronize time (attempt {attempt + 1}): {e}")
+            sleep(2)  # Wait before retrying
+    return False
 
-sync_time()  # Call the function to sync time
-sleep(2)  # Add a short delay to ensure time is set
+if sync_time():  # Call the function to sync time
+    sleep(2)  # Add a short delay to ensure time is set
+else:
+    print("Could not synchronize time. Exiting...")
+    exit(1)  # Exit if time synchronization fails
 
 app = Client("my_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
