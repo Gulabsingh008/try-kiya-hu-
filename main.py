@@ -1,5 +1,5 @@
 import ntplib
-from time import ctime
+from time import ctime, sleep
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
 
@@ -13,6 +13,7 @@ def sync_time():
         print(f"Failed to synchronize time: {e}")
 
 sync_time()  # Call the function to sync time
+sleep(2)  # Add a short delay to ensure time is set
 
 app = Client("my_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
