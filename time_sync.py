@@ -1,7 +1,7 @@
 import ntplib
 from time import ctime, sleep
 
-def sync_time(retries=3):
+def sync_time(retries=5):
     for attempt in range(retries):
         try:
             client = ntplib.NTPClient()
