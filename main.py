@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
-from config import BOT_TOKEN
+from config import BOT_TOKEN, API_ID, API_HASH
 
-app = Client("my_bot", bot_token=BOT_TOKEN)
+app = Client("my_bot", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 
 @app.on_message(filters.command("start"))
 async def start(client, message):
@@ -40,7 +40,6 @@ async def handle_playlist(client, message):
         password = client.user_data[message.chat.id]["password"]
         
         # Here you would implement the video downloading logic
-        # For example, call a function to download the video using yt-dlp
         await message.reply(f"Downloading video from {playlist_url} with username {username} and password {password}...")
         
         # After downloading, you can send the video back to the user
