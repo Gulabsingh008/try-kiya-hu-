@@ -1,7 +1,11 @@
 from pyrogram import Client, filters
 from config import BOT_TOKEN, API_ID, API_HASH
-from time_sync import sync_time  # Import the sync_time function
-from time import sleep  # Import sleep from the time module
+from time_sync import sync_time, continuous_time_check  # Import the sync_time and continuous_time_check functions
+from time import sleep
+import threading
+
+# Start continuous time checking in a separate thread
+threading.Thread(target=continuous_time_check, daemon=True).start()
 
 # Synchronize time
 if sync_time():  # Call the function to sync time
@@ -49,10 +53,4 @@ async def handle_playlist(client, message):
         password = client.user_data[message.chat.id]["password"]
         
         # Here you would implement the video downloading logic
-        await message.reply(f"Downloading video from {playlist_url} with username {username} and password {password}...")
-        
-        # After downloading, you can send the video back to the user
-        # await app.send_video(message.chat.id, "path_to_downloaded_video.mp4")
-
-if __name__ == "__main__":
-    app.run()
+        await message.reply(f"Downloading video
