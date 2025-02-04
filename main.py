@@ -1,9 +1,9 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, ConversationHandler
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
 from bot import start, download, handle_username, handle_password, handle_playlist
 
-def main():
-    updater = Updater("YOUR_BOT_TOKEN")
-    dp = updater.dispatcher
+async def main():
+    application = ApplicationBuilder().token("YOUR_BOT_TOKEN").build()
 
     # Define the conversation handler
     conv_handler = ConversationHandler(
@@ -16,11 +16,12 @@ def main():
         fallbacks=[],
     )
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(conv_handler)
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(conv_handler)
 
-    updater.start_polling()
-    updater.idle()
+    await application.run_polling()
 
 if __name__ == "__main__":
-    main()
+    import asyncio
+    asyncio.run(main())
+    
