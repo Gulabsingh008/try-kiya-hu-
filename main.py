@@ -23,6 +23,5 @@ async def main():
 
 if __name__ == "__main__":
     import asyncio
-    # Use asyncio.get_event_loop() to get the current event loop
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    # Instead of using asyncio.get_event_loop(), just call the main function directly
+    asyncio.run(main())
